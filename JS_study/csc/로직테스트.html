@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bouncing Balls</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden; /* 스크롤바 없애기 */
+            background-color: #1a1a2e; /* 어두운 배경색으로 화려함 강조 */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #e0e0e0;
+            text-align: center;
+        }
+
+        h4 {
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 2em;
+            color: #e94560;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            transition: color 0.3s;
+        }
+        h4:hover {
+            color: #ff7f00;
+        }
+
+        #wrapper {
+            width: 100vw; /* 전체 뷰포트 너비 */
+            height: 100vh; /* 전체 뷰포트 높이 */
+            border: 5px solid #0f3460; /* 더 시크한 테두리 */
+            position: relative;
+            overflow: hidden; /* 공이 밖으로 나가지 않도록 */
+            background-color: #0c0a20; /* 어두운 내부 배경 */
+            box-shadow: 0 0 20px rgba(233, 69, 96, 0.8); /* 테두리에 빛나는 효과 */
+        }
+
+        .ball { /* #ball 대신 .ball 클래스로 변경하여 여러 개 생성 */
+            border-radius: 50%;
+            position: absolute;
+            background-size: cover; 
+            background-repeat: no-repeat;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.7); /* 공에도 빛나는 효과 */
+            transition: background-color 0.1s ease-out; /* 배경색 전환 부드럽게 */
+            will-change: transform; /* 애니메이션 성능 최적화 */
+        }
+
+        /* 배경 번쩍임 효과 */
+        .flash {
+            animation: backgroundFlash 0.1s ease-out;
+        }
+        @keyframes backgroundFlash {
+            from { background-color: #0c0a20; }
+            to { background-color: #ff7f00; } /* 번쩍이는 색상 */
+        }
+    </style>
+</head>
+
+<body>
+
+    <h4 onclick="go()">🚀 Super Ultra Hyper Bouncing Party! (클릭!) 🚀</h4>
+    <div id="wrapper">
+    </div>
+
+    <script>
+        const wrapper = document.querySelector("#wrapper");
+        const BALL_IMAGE_URL = 'https://blog.kakaocdn.net/dna/dnyx2E/btqQ57CkVsO/AAAAAAAAAAAAAAAAAAAAAGYuqw_gWSvzJfRZcXRdQrWG2BfqCkL4qKfI8QnrdFyQ/img.png?credential=yqXZFxpELC7KVnFOS48ylbz2pIh7yKj8&expires=1764514799&allow_ip=&allow_referer=&signature=VEZPFh1MOH6Vw936ZmIXr3mduCQ%3D';
+
+        const BORDER_THICKNESS = 5; // wrapper의 border 두께 (CSS와 일치)
+        const UPDATE_INTERVAL = 8; // 업데이트 간격 8ms (더 부드럽고 빠르게)
+
+        let balls = []; // 모든 공 객체를 저장할 배열
+        let animationFrameId; // requestAnimationFrame ID
+
+        // 마우스 위치 저장
+        let mouseX = 0;
+        let mouseY = 0;
+
+        wrapper.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        // 공 객체 생성자 함수
+        function Ball(size, x, y, speedX, speedY) {
+            this.element = document.createElement('div');
+            this.element.className = 'ball';
+            this.element.style.width = `${size}px`;
+            this.element.style.height = `${size}px`;
+            this.element.style.backgroundImage = `url(${BALL_IMAGE_URL})`;
+            this.element.style.left = `${x}px`;
+            this.element.style.top = `${y}px`;
+            this.element.style.zIndex = Math.floor(Math.random() * 100); // 겹칠 때 z-index로 렌더링 순서 다르게
+            wrapper.appendChild(this.element);
+
+            this.size = size;
+            this.x = x;
+            this.y = y;
+            this.speedX = speedX;
+            this.speedY = speedY;
+            this.trail = []; // 꼬리 효과를 위한 배열
+            this.trailOpacity = 0.5;
+        }
+
+        // 공 업데이트 메서드
+        Ball.prototype.update = function() {
+            // 마우스 상호작용 (밀어내기)
+            const DISTANCE_THRESHOLD = 100; // 마우스와 공 사이의 반응 거리
+            const PUSH_FORCE = 0.8; // 밀어내는 힘
+
+            const dx_mouse = this.x + this.size / 2 - mouseX;
+            const dy_mouse = this.y + this.size / 2 - mouseY;
+            const distance = Math.sqrt(dx_mouse * dx_mouse + dy_mouse * dy_mouse);
+
+            if (distance < DISTANCE_THRESHOLD) {
+                this.speedX += (dx_mouse / distance) * PUSH_FORCE;
+                this.speedY += (dy_mouse / distance) * PUSH_FORCE;
+            }
+
+            this.x += this.speedX;
+            this.y += this.speedY;
+
+            // X축 경계 확인 및 방향 반전
+            if (this.x + this.size >= wrapper.offsetWidth - BORDER_THICKNESS || this.x <= BORDER_THICKNESS) {
+                this.speedX *= -1;
+                // 경계 보정 (공이 테두리에 박히지 않도록)
+                this.x = (this.x + this.size >= wrapper.offsetWidth - BORDER_THICKNESS) ? wrapper.offsetWidth - BORDER_THICKNESS - this.size : BORDER_THICKNESS;
+                this.speedX += (Math.random() - 0.5) * 2; // 튕길 때 무작위성 추가
+                this.speedY += (Math.random() - 0.5) * 2; // 튕길 때 무작위성 추가
+                this.triggerCollisionEffect();
+            }
+
+            // Y축 경계 확인 및 방향 반전
+            if (this.y + this.size >= wrapper.offsetHeight - BORDER_THICKNESS || this.y <= BORDER_THICKNESS) {
+                this.speedY *= -1;
+                // 경계 보정
+                this.y = (this.y + this.size >= wrapper.offsetHeight - BORDER_THICKNESS) ? wrapper.offsetHeight - BORDER_THICKNESS - this.size : BORDER_THICKNESS;
+                this.speedX += (Math.random() - 0.5) * 2; // 튕길 때 무작위성 추가
+                this.speedY += (Math.random() - 0.5) * 2; // 튕길 때 무작위성 추가
+                this.triggerCollisionEffect();
+            }
+            
+            // 🌟 공끼리 충돌 처리 (간단한 버전) 🌟
+            for (let i = 0; i < balls.length; i++) {
+                let otherBall = balls[i];
+                if (otherBall === this) continue; // 자기 자신과는 비교 안 함
+
+                const dx = (this.x + this.size / 2) - (otherBall.x + otherBall.size / 2);
+                const dy = (this.y + this.size / 2) - (otherBall.y + otherBall.size / 2);
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                const minDistance = this.size / 2 + otherBall.size / 2;
+
+                if (distance < minDistance) {
+                    // 겹쳤을 경우 간단히 방향을 반전 (더 복잡한 물리 충돌은 생략)
+                    this.speedX *= -1;
+                    this.speedY *= -1;
+                    otherBall.speedX *= -1;
+                    otherBall.speedY *= -1;
+
+                    // 겹침 방지 (간단하게 서로 밀어내기)
+                    const overlap = minDistance - distance;
+                    const adjustX = (dx / distance) * overlap / 2;
+                    const adjustY = (dy / distance) * overlap / 2;
+                    this.x += adjustX;
+                    this.y += adjustY;
+                    otherBall.x -= adjustX;
+                    otherBall.y -= adjustY;
+
+                    this.triggerCollisionEffect();
+                    otherBall.triggerCollisionEffect();
+                }
+            }
+
+
+            // 꼬리 효과 (Trail Effect)
+            this.trail.push({ x: this.x + this.size / 2, y: this.y + this.size / 2, opacity: this.trailOpacity, size: this.size });
+            if (this.trail.length > 20) { // 꼬리 길이 제한
+                this.trail.shift();
+            }
+            this.drawTrail();
+
+            // 위치 적용
+            this.element.style.left = `${this.x}px`;
+            this.element.style.top = `${this.y}px`;
+        };
+
+        // 꼬리 그리기 메서드
+        Ball.prototype.drawTrail = function() {
+            // 이전 꼬리를 모두 지웁니다 (매 프레임마다 다시 그리기)
+            let existingTrails = this.element.parentNode.querySelectorAll(`.trail-${this.element.id}`);
+            existingTrails.forEach(t => t.remove());
+
+            this.trail.forEach((tPoint, index) => {
+                const trailPart = document.createElement('div');
+                trailPart.className = `trail trail-${this.element.id}`;
+                trailPart.style.position = 'absolute';
+                trailPart.style.borderRadius = '50%';
+                trailPart.style.backgroundColor = `rgba(233, 69, 96, ${tPoint.opacity * (index / this.trail.length)})`; // 점차 투명해지도록
+                trailPart.style.width = `${tPoint.size * (index / this.trail.length) * 0.5}px`; // 점차 작아지도록
+                trailPart.style.height = `${tPoint.size * (index / this.trail.length) * 0.5}px`;
+                trailPart.style.left = `${tPoint.x - trailPart.offsetWidth / 2}px`;
+                trailPart.style.top = `${tPoint.y - trailPart.offsetHeight / 2}px`;
+                trailPart.style.zIndex = this.element.style.zIndex - 1; // 공 뒤에 오도록
+                wrapper.appendChild(trailPart);
+            });
+        };
+
+        // 충돌 효과 (배경 번쩍임)
+        Ball.prototype.triggerCollisionEffect = function() {
+            wrapper.classList.add('flash');
+            setTimeout(() => {
+                wrapper.classList.remove('flash');
+            }, 100); // 0.1초 동안 번쩍임
+        };
+
+        // 애니메이션 루프
+        function animate() {
+            balls.forEach(ball => ball.update());
+            animationFrameId = requestAnimationFrame(animate);
+        }
+
+        // 공 생성 함수
+        function go() {
+            // 이미 애니메이션이 시작되었으면 새로운 공만 추가
+            if (!animationFrameId) {
+                animate(); // 첫 공 생성 시 애니메이션 시작
+            }
+
+            // 무작위 크기, 위치, 속도 생성
+            const size = Math.random() * (100 - 50) + 50; // 50px ~ 150px
+            const initialX = Math.random() * (wrapper.offsetWidth - BORDER_THICKNESS * 2 - size) + BORDER_THICKNESS;
+            const initialY = Math.random() * (wrapper.offsetHeight - BORDER_THICKNESS * 2 - size) + BORDER_THICKNESS;
+            const speedX = (Math.random() - 0.5) * 30 + (Math.random() > 0.5 ? 1 : -1) * 5; // -10 ~ 10 사이의 랜덤 속도
+            const speedY = (Math.random() - 0.5) * 30 + (Math.random() > 0.5 ? 1 : -1) * 5;
+
+            // 새로운 공 생성 및 배열에 추가
+            const newBall = new Ball(size, initialX, initialY, speedX, speedY);
+            newBall.element.id = `ball-${balls.length}`; // 꼬리 효과를 위해 ID 부여
+            balls.push(newBall);
+        }
+    </script>
+
+</body>
+</html>

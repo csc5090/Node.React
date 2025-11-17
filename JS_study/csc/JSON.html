@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <script>
+        // JSON => JavaScript Object Notaion
+        // {}, [] 도 JSON에 포함됨.
+
+
+        const name = "최상철"
+
+
+        //key 값. 속성명은 기본적으로 문자열로 처리됨
+        const aaa = {
+            name: "원효", //이건 "name"이라는 뜻
+            alias: "대사",
+        };
+
+        const bbb = {};
+        bbb.name = "원효";
+        bbb.alias = "대사";
+
+        const ccc = {
+            ["name"]: "원효",   //배열식 접근법, 또는 객체 조회법
+            ["alias"]: "대사",
+        };
+        
+        console.log("체크: ",aaa,bbb,ccc);
+
+
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>

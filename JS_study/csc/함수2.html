@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+        //return에 제약사항이 없었듯이 매개변수에도 제약 사항이 없다.
+        //매개변수로 함수가 넘어가는 걸 callback 함수라 부름.
+
+        function ck(pArg) {
+            pArg(); //cb()와 같다
+        } // pArg=cb    
+
+        function cb() {
+            alert("콜백 함수");
+        }
+
+        ck(cb);
+
+
+
+        /*
+        ck("A");
+        ck(999)
+        ck({name:"최상철"})
+        */
+
+
+        const testArr = ["현규", "종창", "원효", "상철"];
+
+        function check(pArr, pCb) {
+            for(let i=0; i<pArr.length; i++) { //배열 반복
+                pCb(pArr[i],i);  //콜백함수 호출
+            }
+        }
+
+        check(testArr,function(p1,p2){
+            alert(p1+ " " + p2);
+        })
+
+
+    </script>
+    
+</body>
+</html>

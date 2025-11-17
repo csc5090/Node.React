@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id= "jiwon"> ㅎㅇ</div>
+
+
+    <script>
+    // navigator => 브라우저
+    // window => 브라우저 탭1개
+    // document => html 문서 자체
+    const jw = document.querySelector("#jiwon");
+    //jw.style.backgroundColor="black";
+    //jw.style.color="yellow";
+
+    jw.style["background-color"] = "black";
+    jw.style["color"] = "yellow";
+
+    function css(attr, val) {
+        jw.style[attr] = val;
+        //배열 접근법을 모르면 수많은 if문이나 swtich 문이 필요하게 됨
+    }
+
+    css("color", "blue");
+    css("font-size", "5em");
+    css("backgroundColor", "magenta");
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //표현식(Expressing)을 이용한 초기화 함수 (딱 한 번만 바로 실행)
+        //즉각 실행함수라고 불리며, 라이브러리 만들 때 사용함
+        //관례적 약속은 ()나 !를 쓰는 것.
+
+        (function(pName){
+            alert("체크" + pName);
+        })("선회");
+
+
+
+        //DRY : Do not Reapeat Yourself => ㄴ 반복
+        // KISS (Keep It Simple, Stupid) => 심플하게 만들어라. 멍청아.
+        //선언과 호출을 잘 구분해야 함
+
+
+        /*  //선언
+         function jiwon() {
+             return "지원만세"; //리턴이 없어도, 묵시적으로 제공됨
+             alert("형수님 안녕하세요"); //리턴을 만나는 순간 함수는 종료됨. 리턴 위로 올라가면 뜸.ㄴ
+         }
+ 
+         //호출
+         //호출된 자리에는 return값이 남음.
+         */
+        
+        //alert(jiwon()); // 이게 호출되는 이유(함수는 아래에 있는데)를 호이스팅이라고 함. 성능향상을 위해 실행 전 코드에서 선언부만 위로 올려버리는 것.
+        //alert(sumin()); // const는 생성이라서, 공식 함수 선언법이 아니라 호이스팅이 불가능
+
+        
+        function jiwon(pName) {
+            if (pName == "지원") {
+                return function () {
+                    alert("나 함수");
+                    return; 
+                };
+            }
+            return "너 누구얌";
+        }
+        alert(jiwon("지원")());
+
+        //return 되는 데이터 타입에 제약사항이 있는가?
+
+        //호출된 자리에는 리턴값이 남음
+        /*      alert(jiwon("지원2"));  //?
+                alert(jiwon("지원")); */
+
+
+    //선언2
+    const sumin = function() {
+        alert("그동안 수민이란 이름은 모두 잘했음");
+    };
+
+    </script>
+
+</body>
+
+</html>

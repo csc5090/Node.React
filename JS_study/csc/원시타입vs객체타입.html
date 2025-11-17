@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<meta charset="UTF-8" />
+<h1>원시타입vs객체타입</h1>
+<input type="text" name="sh" id="sh" value="선회">
+<script>
+
+    var money = 999999999;
+    alert(money.toLocaleString());
+
+
+    var check2 = "하품 큰 형수"; //string 은 원시타입
+    alert(check2.substring(0, 3)); //원시타입인데 메서드가?
+
+    // 원시타입에 .을 붙이는 순간 자동으로 Wrapper 객체로 바뀜.
+    // string => STring, number => Number, boolean => Boolean 
+
+
+
+    var check = document.querySelector("#sh").value;
+    check="change?";
+
+
+
+// Primitive 타입 => number,string,boolean, 등
+// 원시 타입이란 뜻. 속성도 메소드도 없음.
+
+// Object 타입 => 원시 타입이 아닌 전부
+
+// 왜 이 구분이 중요한가? 동작이 다름(복사와 참조)
+
+/* var jc = "종창";  */
+// alert(typeof jc);
+
+jc2 = "종창2";
+/* alert(jc);  */
+
+var hsInfo = {
+    name: "형수",
+    age: 23,
+
+}
+
+var it = hsInfo;
+
+
+</script>

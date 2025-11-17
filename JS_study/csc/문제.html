@@ -1,0 +1,23 @@
+<script>
+
+let chkCount = 0;
+function cntCheck(pThis){
+    console.log("체크: ", pThis.checked);
+    if (pThis.checked){
+        checkCount++;
+    } else {
+        chkCount--;
+    }
+    if (chkCount > 4) {
+        alert("asddas");
+        pThis.checked = false;
+        chkCount--;
+    }
+}
+
+function check() {
+    event.preventDefault();
+}
+
+
+</script>

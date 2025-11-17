@@ -2,24 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <button id="btn-1">버튼</button>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.23.0/sweetalert2.all.js"></script>
+</head>
+<body>
+    
+<button id="btn-1">버튼</button>
     <script>
+        //document.write("<h1>123123</h1>");
+        //document.write("<h1>33233</h1>");
+
+        //call, apply, bind는 화살표 함수에 쓸 수 없음.
+
+
+        const swrt = document.write.bind(document);
+        /* function swrt(msg){
+            document.write(msg);
+        } */
+        swrt("<h1>첫번째 swrt</h1>");
+        swrt("<h1>두번째 swrt</h1>");
+
+        Swal.fire("Sweet Alert2");
+
         const btn1 = document.querySelector("#btn-1");
 
         function handleClick(pName){
-            alert(pName + "버튼 클릭" + this.alias);
+            alert(pName + " < 버튼 눌림, 버튼 alias : " + this.alias);
         }
 
         const btn2 = {
             name: "두번째버튼",
             alias: "버튼2",
         };
-        btn1.addEventListener("click", handleClick.bind(btn2, "이벤트 리스너, 클릭"));
+        btn1.addEventListener("click", handleClick.bind(btn2, "이벤트 리스너"));
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-</head>
-<body>
-    
+
 </body>
 </html>

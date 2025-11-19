@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+        //sort 준비
+        const testArr = [2, 7, 4, 5, 9, 1, 3];
+        const testArr2 = ["수민", "지원", "선회", "현규", "종창"];
+        
+        testArr2.sort((a, b)=> {
+            //console.log("체크 : ", a, b);
+            return b - a;
+        });
+
+
+        console.log("체크 : ", testArr2);
+
+
+        for(let i=1; i < testArr.length; i++) {
+            if (maxVal < testArr[i]) {
+                maxVal = testArr[i]; 
+            }
+        }
+        
+        alert("최대값은 " + maxVal);
+
+
+
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+<style>
+    #suminModal {
+        /* 모달은 대부분 css로 만들어진다.*/
+        position : fixed;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        z-index: 999999999;
+        background-color: rgb(187, 19, 159, 0.3);
+        display: none;
+    }
+
+    #suCont{
+        margin: 30px auto;
+        width: 50%;
+        height: 50%;
+        background-color: red;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+
+    <!--
+        모달을 가져다 쓰는 경우가 제법 있는데, 직접 만들어 자신만의 모달을 활용하면 다른 라이브러리와 충돌한다.
+        대부분은 z-index 값 차이로 발생한다.
+    -->
+
+    <div id="suminModal">
+        <div id="suCont">
+            <h1>suCont의 내용(모달 안 div)</h1>
+            <button onclick="mclose()">X</button>
+        </div>
+    </div>
+
+    <div id="wraaper">
+        <button onclick="mopen()">버튼</button>
+    </div>
+
+    <script>
+
+        const suminModal = document.querySelector("#suminModal");
+        let isToggle = false;
+        function mopen(){
+            if (!isToggle) {
+                suminModal.style.display="block";
+                isToggle=!isToggle
+                return;
+            }
+            suminModal.style.display="none";
+        }
+
+        function mclose(){
+            suminModal.style.display="none"
+            isToggle = false;
+        }
+
+    </script>
+</body>
+</html>

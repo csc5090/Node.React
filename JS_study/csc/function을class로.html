@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+<script>
+    //class란 키워드가 es6버전에서 추가됨.
+    //순수 자바스크립트에선 function 키워드가 class 키워드 역할도 같이 함.
+    //class의 의미로 쓴다는 것은 호출을 new 함수명();
+
+
+    function Genius(name) {
+        this.name = name;
+        /* 
+        개별 생성된 객체마다 똑같은 메소드를 가짐
+        this.insa = function(){
+            return `I'm {$this.name} .`;
+        } */
+        return this;  //class의 의미로 쓸 때 단순 return이 아닌 return this가 생략됨
+    }
+
+    //메소드를 공유해서 쓰려면 prototype이란 미리 만들어진 객체(공간)에 할당해야함
+    //사실 속성도 prototype에 쓰면 공유 되는데 (자바의 경우 static),js에선 의미 없음(그냥 전역변수)
+
+    Genius.prototype.insa = function () {
+        return `i'm ${this.name} !`;
+    };
+
+
+    const genius = new Genius("지니어스1");
+    const genius2 = new Genius("지니어스2");
+    console.log("체크1 : ", genius);
+    console.log("체크2 : ", genius2);
+    alert(genius2.insa());
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

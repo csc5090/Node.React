@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    id<input type="number" id="sId" value="" placeholder="id값" /><br>
+    이름<input type="text" id="sName" value="" placeholder="이름" /><br>
+    나이<input type="number" id="sAge" value="" min="20" max="50" /><br>
+    기분<input type="text" id="sFeel" value="" placeholder="기분" /><br>
+
+    <button onclick="modify()">수정</button>
+
+    <script>
+        const sAge = document.querySelector("#sAge");
+        const sId = document.querySelector("#sId");
+        const sName = document.querySelector("#sName");
+        const sFeel = document.querySelector("#sFeel");
+
+        /* let testData = {
+            name: "name",
+            age: "24",
+            feel : "Good"
+        }; */
+
+        const testData = [];
+        for (let i = 1; i <= 10; i++) {
+            let human = {
+                sid: i,
+                name: "사람" + i,
+                age: Math.round(Math.random() * 40) + 20,
+                feel: "good",
+            };
+            testData.push(human);
+        }
+
+        localStorage.setItem("sumin", JSON.stringify(testData));
+
+        const modify = () => {
+            let data = JSON.parse(localStorage.getItem("sumin")); // 역직렬화 부터. 데이터를 불러오고 복원
+
+            for (let i = 0; i < data.length; i++) {
+                let onehuman = data[i];
+                if (onehuman.sid == sId.value) {
+                    onehuman.name = sName.value;
+                    onehuman.feel = sFeel.value;
+                    onehuman.age = sAge.value;
+                }
+                localStorage.setItem("sumin", JSON.stringify(onehuman));
+            }
+        };
+
+        const modify1 = () => {
+            let rObj2 = JSON.parse(localStorage.getItem("sumin"));
+            let newValues = rObj2.map(())
+
+        }
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>

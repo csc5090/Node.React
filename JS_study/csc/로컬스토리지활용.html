@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+        //localStorage에 단순 원시타입 value만 저장해서 사용하는 경우는 거의 없다.
+        //localStorage에 제약 사항이 있는데, 객체 그대로 저장은 지원하지 않는다. 문자열만 저장이 가능하다.
+        //localStorage에 저장하는 방식이 보이는 모습은 정확히 유명한 MongoDB와 정확히 일치한다. localStorage를 잘 쓴다면, MongoDB를 잘 쓴다는 이야기와 같다.
+
+        let testStr = '{"name" : "선회", "age" : 30}'; //직렬화
+        JSON.parse(testStr); //역직렬화
+
+
+        let suminInfo = {
+            name: "name",
+            mode: "mode",
+        };
+
+        alert(suminInfo.toString());
+
+        //쓰기 (직렬화 필요)
+        localStorage.setItem("sumin", JSON.stringify(suminInfo));
+
+        //읽기 (역직렬화)
+        let rvalue = JSON.parse(localStorage.getItem("sumin"));
+        alert(rvalue.name + rvalue.mode);
+
+
+
+    </script>
+
+</head>
+<body>
+    
+</body>
+</html>

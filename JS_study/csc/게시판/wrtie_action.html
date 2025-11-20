@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script src="./jsp.js"></script>
+<script>
+    const title = request.getParameter("title");
+    const writer = request.getParameter("writer");
+    const cont = request.getParameter("cont");
+    const cat = request.getParameterValues("cat"); 
+
+    const gul = {
+        title,
+        writer,
+        cat,
+        cont,
+    };
+
+
+    const tablekey = "sumin";
+    if(!localStorage.getItem(tablekey)) {
+        //최초 저장
+    } else {
+        //추가 저장
+    }
+
+    
+//localStorage에 저장해야 하는데, 최초 저장이느냐, 추가 저장이느냐 에 따른 추가 처리가 필요.
+
+
+
+</script>
